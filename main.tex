@@ -1,0 +1,109 @@
+\documentclass[11pt,a4paper]{article} % Type de documents
+
+% Importation des paquets nécessaire à la compilation du projet
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\usepackage{csquotes}
+\usepackage [english]{babel}
+\usepackage{fancyhdr}
+
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{amsmath}
+\usepackage{float}
+
+\usepackage{siunitx}
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+
+\usepackage{xcolor} % Required for custom colors
+\usepackage{hyperref} % Required for hyperlinks
+
+\usepackage{geometry}
+
+% Spécifiez les marges ici
+\geometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
+
+% Define custom colors
+\definecolor{linkcolor}{HTML}{0000FF} % Blue color for links
+\hypersetup{
+    colorlinks=true,
+    linkcolor=linkcolor, % Set the color of internal links
+    urlcolor=linkcolor   % Set the color of URLs
+}
+
+
+
+\addbibresource{references.bib}
+\nocite{*}
+
+\begin{document}
+
+\begin{titlepage}
+
+\raggedleft
+\includegraphics[scale=0.2]{images/logo.jpg}\\
+
+% Input text above title if you wish 
+\vspace{3cm}
+\begin{center}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\textsc{\Large S4.A.01 2023-24}\\[2.0mm]
+\textsc{\Large Computer Science Bachelor, A}\\[2.0mm]
+\vspace{0.8cm}
+    \HRule\\[0.4cm]
+    {\huge\bfseries Information theory}\\[0.4cm] 
+    \HRule\\[1.5cm]
+    
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushleft}
+            \large
+            \textit{Authors:}\\
+            \text{}\\
+            \text{GODINAT Caetano, PICAURON Adam, DAUGE Alexis}\\
+            \text{(Group 21)}\\
+        \end{flushleft}
+    \end{minipage}
+        ~
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushright}
+            \large
+            \text{ } \\
+        \end{flushright}
+    \end{minipage}
+\mbox{}
+\vfill
+
+\date{March 2024}
+
+\end{center}
+\end{titlepage}
+
+\newpage
+\thispagestyle{empty}
+
+\setcounter{tocdepth}{3}
+
+% Table des matières mise à jour automatiquement
+\renewcommand{\contentsname}{Table of Contents}
+\tableofcontents
+\newpage
+
+\setcounter{page}{1}
+\parskip = \baselineskip
+\newpage
+
+% Les sections (et leur sous sections) correspondantes au plan mis en place dans la table des matières
+\include{sections/introduction}
+
+\include{sections/fondements/index}
+\include{sections/applications/index}
+
+\include{sections/conclusion}
+\include{sections/annexes}
+
+\end{document}
