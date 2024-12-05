@@ -1,0 +1,77 @@
+from binary_tree IMPORT BinaryTree
+
+DEFINE CLASS Trellis:
+
+    SET def __init__(self, msg: str, initial_state: str TO "00", polynome: str TO ["111", "101"]) -> None:
+        SET self.msg TO msg
+
+        if(not "0" IN msg or not "1" IN msg):
+            SET self.msg_bits TO ''.join(format(i, '08b') FOR i IN bytearray(msg, encoding ='utf-8'))
+        ELSE:
+            SET self.msg_bits TO msg
+
+        SET self.generator_polynomial TO polynome
+        SET self.initial_state TO initial_state
+
+    DEFINE FUNCTION convo_encode(self) -> list:
+
+        SET (g1, g2) TO self.generator_polynomial
+        SET INPUT TO "00" + self.msg_bits
+        SET register TO []
+
+        FOR i IN range(len(self.msg_bits)):
+            register.append(INPUT[-3:])
+            SET INPUT TO INPUT[:-1]
+
+            
+        SET output TO ""
+        FOR j IN range(len(register)):
+            SET u1, u2 TO 0, 0
+
+            FOR k IN range(3):
+                u1 ^= int(register[j][k]) & int(g1[k])
+                u2 ^= int(register[j][k]) & int(g2[k])
+
+            SET output TO str(u1) + str(u2) + output
+        SET # output TO output[::-1]
+
+        RETURN output
+
+    DEFINE FUNCTION viterbi_decode(self, encoded_message) -> str:
+        SET tree TO BinaryTree({"state": self.initial_state, "output": "", "dist": -1, "message": ""})
+        tree.compute_branchs_metrics(encoded_message)
+
+        SET path TO tree.compute_all_metrics(-1, "", [])
+    
+        SET min TO path[0][0]
+        SET most_probable_message TO path[0][1]
+
+        FOR i IN range(1, len(path)):
+            IF path[i][0] < min:
+                SET min TO path[i][0]
+                SET most_probable_message TO path[i][1]
+        tree.display()
+
+        RETURN most_probable_message
+
+    DEFINE FUNCTION to_string(self) -> str:
+        OUTPUT("-----------------------BASIC INFORMATIONS -----------------------------------")
+        OUTPUT("Base message:", self.msg)
+        OUTPUT("Base message bits:", self.msg_bits)
+        OUTPUT("Generator polynomial:", self.generator_polynomial)
+        OUTPUT("Initial state:", self.initial_state)
+        OUTPUT("-----------------------------------------------------------------------------")
+        RETURN
+
+SET msg TO "1010"
+SET trellis TO Trellis(msg, "00")
+
+trellis.to_string()
+SET encode TO trellis.convo_encode()
+SET decode TO trellis.viterbi_decode(encoded_message=encode)
+
+OUTPUT("-----------------------RESULT INFORMATIONS ----------------------------------")
+OUTPUT("Encoded message:", encode)
+OUTPUT("Decoded message bits:", decode)
+IF "0" not IN trellis.msg or "1" not IN trellis.msg: OUTPUT("Decoded message:", ''.join(chr(int(decode[i:i+8], 2)) FOR i IN range(0, len(decode), 8)))
+OUTPUT("-----------------------------------------------------------------------------")
